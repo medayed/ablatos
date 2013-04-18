@@ -6,15 +6,16 @@ class Login:
     _cp_config = {'tools.sessions.on': True}
     
     def verif(self,login,passwd):
-	username = login
-        cleartext = passwd
-        cryptedpasswd = pwd.getpwnam(login)[1]
-        if cryptedpasswd:
-            if cryptedpasswd == 'x' or cryptedpasswd == '*':
-                 cryptedpasswd = spwd.getspnam(login)[1]
-            return crypt.crypt(passwd, cryptedpasswd) == cryptedpasswd
-        else:
-            return 1
+        try :
+            cryptedpasswd = pwd.getpwnam(login)[1]
+            if cryptedpasswd:
+                if cryptedpasswd == 'x' or cryptedpasswd == '*':
+                     cryptedpasswd = spwd.getspnam(login)[1]
+                return crypt.crypt(passwd, cryptedpasswd) == cryptedpasswd
+            else:
+                return 1
+        except KeyError:
+            print "error"
 
     def index(self,login,passwd):
 	if self.verif(login,passwd):
